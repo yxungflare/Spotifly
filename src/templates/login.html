@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+
+{% block head %}
+    <link href="{{url_for('static', path='/css/login.css')}}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+    <div class="login-page">
+        <div class="form">
+            <form class="login-form">
+                <input type="text" placeholder="Имя пользователя"/>
+                <input type="password" placeholder="Пароль"/>
+                <button>Войти</button>
+                <p class="message">Нет аккаунта? <a href="#">Зарегестрироваться</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $('.message a').click(function(){
+            $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+        });
+    </script>
+{% endblock %}

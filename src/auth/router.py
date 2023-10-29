@@ -49,9 +49,9 @@ async def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 
-# @router.get('/login')
-# async def get_login_page(request:Request):
-#     return templates.TemplateResponse('home.html', {'request': request})
+@router.get('/login')
+async def get_login_page(request:Request):
+    return templates.TemplateResponse('login.html', {'request': request})
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
