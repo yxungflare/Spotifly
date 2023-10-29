@@ -1,0 +1,13 @@
+/* .carousel-item{
+    display: flex;
+} */
+.marg{
+    margin-left: 80px;
+    margin-right: 80px;    
+}
+.carousel-item img{
+    border-radius: 10%;
+}
+a:hover{
+    color: rgb(1, 97, 35);
+}

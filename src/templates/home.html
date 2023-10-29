@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <link href="{{url_for('static', path='/css/home.css')}}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="5000">
+      <div class="row featurette">
+          <div class="col-md-7" style="padding: 0 80px;">
+              <h2 class="featurette-heading fw-normal lh-1">Стриминговый музыкальный сервис Spotify</h2>
+              <p class="lead">Платформа для онлайн-прослушивания музыки, предоставляющая неограниченный доступ к огромной библиотеке аудиозаписей разных жанров. Пользователи могут потоково слушать музыку через интернет, создавать собственные плейлисты, открывать новых исполнителей и делиться музыкой с друзьями. Эти сервисы обеспечивают удобство, мобильность и персонализированный музыкальный опыт, делая музыку доступной в любое время и в любом месте</p>
+          </div>
+          <div class="col-md-5" style="padding: 0 80px;">
+            <img src="{{ url_for('static', path='/img/songs_cards/song_card_1.jpg') }}" width="500" height="500" style="border-radius: 15px;" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"/>  
+          </div>
+      </div>
+    </div>
+    <div class="carousel-item" data-bs-interval="5000">
+      <div class="row featurette">
+          <div class="col-md-5" style="padding: 0 80px;">
+            <img src="{{ url_for('static', path='/img/songs_cards/song_card_2.jpg') }}" width="500" height="500" style="border-radius: 15px;" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"/>  
+          </div>
+          <div class="col-md-7" style="padding: 0 80px;">
+              <h2 class="featurette-heading fw-normal lh-1">Приветствуем вас в мире музыки без ограничений!</h2>
+              <p class="lead"> Наш стриминговый музыкальный сервис предлагает неограниченный доступ к миллионам треков, альбомов и плейлистов прямо у вас на устройстве. Наслаждайтесь лучшим качеством звука и персонализированными рекомендациями, подстраиваемыми под ваши предпочтения. Откройте для себя новые треки в разных жанрах или погрузитесь в вашу любимую музыкальную эпоху с нашей богатой коллекцией. Вперед, дайте музыке зазвучать в вашей жизни</p>
+          </div>
+      </div>
+    </div>
+    <div class="carousel-item" data-bs-interval="5000">
+      <div class="row featurette">
+          <div class="col-md-5" style="padding: 0 80px;">
+            <img src="{{ url_for('static', path='/img/songs_cards/song_card_3.jpg') }}" width="500" height="500" style="border-radius: 15px;" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"/>  
+          </div>
+          <div class="col-md-7" style="padding: 0 80px;">
+              <h2 class="featurette-heading fw-normal lh-1">Слушайте где и когда угодно</h2>
+              <p class="lead">Стриминговый музыкальный сервис Spotify - это мощное музыкальное волшебство, где мировая музыкальная библиотека находится в ваших руках</p>
+          </div>
+      </div>
+    </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" style="border-radius: 40%; background-color: rgba(0, 0, 0, 0.11);" aria-hidden="true"></span>
+      <span class="visually-hidden">Предыдущий</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+      <span class="carousel-control-next-icon" style="border-radius: 40%; background-color: rgba(0, 0, 0, 0.11);" aria-hidden="true"></span>
+      <span class="visually-hidden">Следующий</span>
+  </button>
+</div>
+
+    <!-- <div class="row featurette descript">
+        <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading fw-normal lh-1">Слушайте где и когда удобно</h2>
+        <p class="lead">Вас ждут отдельные музыкальные композиции, альбомы, подборки музыкальных треков и получать персональные рекомендации</p>
+        </div>
+        <div class="col-md-5 order-md-1">
+        <img src="{{ url_for('static', path='/img/songs_cards/song_card_1.jpg') }}" width="500" height="500" style="border-radius: 15px;"/>
+        </div>
+    </div> -->
+{% endblock %}
