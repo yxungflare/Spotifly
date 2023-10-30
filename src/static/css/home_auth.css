@@ -1,0 +1,21 @@
+.gradient-link-1{
+    background: linear-gradient(to right, #FFA500, #FF4500);
+    text-decoration: none;
+  }
+
+.gradient-link-2{
+  background: linear-gradient(to right, #5780ee, #001aff);
+  text-decoration: none;
+}
+.gradient-link-3{
+  background: linear-gradient(to right, #68e274, #029633);
+  text-decoration: none;
+}
+
+.recommendations a{
+    border-radius: 10px;
+}
+
+.playlists div{
+    text-align: center;
+}

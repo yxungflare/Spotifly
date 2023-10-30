@@ -1,6 +1,7 @@
 from datetime import timedelta, datetime
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from sqlalchemy import select
@@ -66,7 +67,7 @@ async def create_user(db: db_dependency,
     await db.commit()
 
 
-@router.post('/token')
+@router.post('/login')
 async def login_for_access_login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: db_dependency):
     user = await authenticate_user(form_data.username, form_data.password, db)
     if not user:
@@ -74,8 +75,8 @@ async def login_for_access_login(form_data: Annotated[OAuth2PasswordRequestForm,
                             detail='Could not validate user...')
     token = create_access_token(user.username, user.id, timedelta(minutes=20))
     
-    return {'access_token': token, 'token_type': 'bearer'}
-
+    # return RedirectResponse(url=f"/home/{user.username}", status_code=303)
+    return RedirectResponse(url=f"/home/{user.username}", status_code=303)
 
 async def authenticate_user(username: str, password: str, db: db_dependency):
     # user = db.query(User).filter(User.username == username).first()

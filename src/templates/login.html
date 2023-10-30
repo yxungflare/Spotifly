@@ -8,11 +8,11 @@
 {% block content %}
     <div class="login-page">
         <div class="form">
-            <form class="login-form">
-                <input type="text" placeholder="Имя пользователя"/>
-                <input type="password" placeholder="Пароль"/>
-                <button>Войти</button>
-                <p class="message">Нет аккаунта? <a href="#">Зарегестрироваться</a></p>
+            <form class="login-form" action="/auth/login" method="post">
+                <input type="text" placeholder="Имя пользователя" name="username"/>
+                <input type="password" placeholder="Пароль" name="password"/>
+                <button type="submit">Войти</button>
+                <p class="message">Нет аккаунта? <a href="/auth/sign_up">Зарегестрироваться</a></p>
             </form>
         </div>
     </div>

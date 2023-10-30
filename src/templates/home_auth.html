@@ -1,0 +1,52 @@
+{% extends "base_auth.html" %}
+
+{% block head %}
+    <link href="{{url_for('static', path='/css/home_auth.css')}}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div class="position-relative d-flex justify-content-center recommendations ">
+    <a href="#" class="gradient-link-1 btn m-3 p-3 col-2 link-light d-flex justify-content-between align-items-center" style="font-weight: 700;">
+        <span>Мой плейлист</span>
+        <img src="{{ url_for('static', path='/img/icons/play.png') }}" width="40px" />
+    </a>
+    <a href="#" class="gradient-link-2 btn m-3 p-3 col-2 link-light d-flex justify-content-between align-items-center" style="font-weight: 700;">
+        <span>Рекомендации</span>
+        <img src="{{ url_for('static', path='/img/icons/play.png') }}" width="40px" />
+    </a>
+    <a href="#" class="gradient-link-3 btn m-3 p-3 col-2 link-light d-flex justify-content-between align-items-center" style="font-weight: 700;">
+        <span>Чарт</span>
+        <img src="{{ url_for('static', path='/img/icons/play.png') }}" width="40px" />
+    </a>
+</div>
+
+<div class="container playlists mt-5">
+    <div class="row">
+        <h2>Сборники музыки</h2>
+        <div class="card col m-3" style="width: 18rem; border: 0px;">
+            <img src="{{ url_for('static', path='/img/songs_cards/morning_playlist.jpg') }}" style="border-radius: 15px;" alt="...">
+            <div class="card-body">
+              <p class="card-text">Утренняя музыка</p>
+            </div>
+        </div>
+        <div class="card col m-3" style="width: 18rem; border: 0px;">
+            <img src="{{ url_for('static', path='/img/songs_cards/lofi_playlist.jpg') }}" style="border-radius: 15px;" alt="...">
+            <div class="card-body">
+              <p class="card-text">Расслабляющий Lo-Fi</p>
+            </div>
+        </div>
+        <div class="card col m-3" style="width: 18rem; border: 0px;">
+            <img src="{{ url_for('static', path='/img/songs_cards/hip-hop_playlist.jpg') }}" style="border-radius: 15px;" alt="...">
+            <div class="card-body">
+              <p class="card-text">Hip-Hop</p>
+            </div>
+        </div>
+        <div class="card col m-3" style="width: 18rem; border: 0px;">
+            <img src="{{ url_for('static', path='/img/songs_cards/sport_playlist.jpg') }}" style="border-radius: 15px;" alt="...">
+            <div class="card-body">
+              <p class="card-text">Музыка для спорта</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
