@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request
-from auth.router import templates
+from router.auth.router import templates
 
 router = APIRouter(
     prefix='/home',

@@ -1,6 +1,6 @@
 from datetime import timedelta, datetime
 from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from starlette import status
 from database import AsyncSessionLocal
 from .models import User
+from router.collections.models import Playlist
 from passlib.context import CryptContext
 from fastapi.security import OAuth2AuthorizationCodeBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
@@ -58,12 +59,23 @@ async def get_login_page(request:Request):
 @router.post('/', status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency,
                       create_user_request:CreateUserRequest):
+                      
     create_user_model = User(
         username = create_user_request.username,
         hashed_password = bcrypt_context.hash(create_user_request.password),
     )
 
     db.add(create_user_model)
+
+    result = await db.execute(select(User).where(User.username == create_user_model.username))
+    current_user = result.scalar()
+
+    create_favorite_playlist = Playlist(
+        name = 'Мне нравится',
+        username_id = current_user.id,
+    )
+    
+    db.add(create_favorite_playlist)
     await db.commit()
 
 
@@ -75,11 +87,9 @@ async def login_for_access_login(form_data: Annotated[OAuth2PasswordRequestForm,
                             detail='Could not validate user...')
     token = create_access_token(user.username, user.id, timedelta(minutes=20))
     
-    # return RedirectResponse(url=f"/home/{user.username}", status_code=303)
     return RedirectResponse(url=f"/home/{user.username}", status_code=303)
 
 async def authenticate_user(username: str, password: str, db: db_dependency):
-    # user = db.query(User).filter(User.username == username).first()
     result = await db.execute(select(User).where(User.username == username))
     user = result.scalar()
     if not user:

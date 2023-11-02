@@ -4,7 +4,8 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
-from src.auth.models import *
+from src.router.auth.models import *
+from src.router.collections.models import *
 from src.config import DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER
 from src.database import Base
 # this is the Alembic Config object, which provides
