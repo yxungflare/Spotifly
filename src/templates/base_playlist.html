@@ -1,23 +1,144 @@
 {% extends "base_auth.html" %}
 
 {% block head %}
-    <link href="{{url_for('static', path='/css/base_playlist.css')}}" rel="stylesheet"/>
+    <link href="{{url_for('static', path='/css/base_playlist.css')}}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
     <div class="card mb-3 playlist" style="max-width: 89%;">
         <div class="row g-0">
-        <div class="col-md-2">
-            <img src="{{ url_for('static', path=playlist.cover) }}" class="img-fluid rounded-start" alt="...">
-        </div>
-        <div class="col-md-8">
-            <div class="card-body">
-                <h5 style="color: rgb(115, 115, 115);">Плейлист</h5>
-            <h2 class="card-title">{{playlist.name}}</h2>
-            <p class="card-text">Это более широкая карточка с вспомогательным текстом ниже в качестве естественного перехода к дополнительному контенту. Этот контент немного длиннее.</p>
-            <p class="card-text"><small class="text-body-secondary">Последнее обновление 3 мин. назад</small></p>
+            <div class="col-md-2">
+                <img src="{{ url_for('static', path=playlist.cover) }}" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 style="color: rgb(115, 115, 115);">{{ playlist.selection_type }}</h5>
+                    <form method="post" action="/collections/{{ username }}/playlist/{{ playlist.id }}/edit_playlist_name">
+                        <div id="edit-nameContainer" class="playlist-name d-flex">
+                            <h2 class="card-title">{{playlist.name}}</h2>
+                            <button type="button" id="edit-name" class="ms-3" style="border: none; background: none;"> 
+                                <img src="{{ url_for('static', path='/img/icons/edit.png') }}" width="20" alt="...">
+                            </button>
+                        </div>    
+                    </form>
+                    <p class="card-text">
+                        {% if playlist.description %}
+                            <form method="post" action="/collections/{{ username }}/playlist/{{ playlist.id }}/edit_description" class="playlist-description d-flex">
+                                <div id="edit-container">
+                                    <p class="d-inline" id="currentDescription">{{ playlist.description }}</p>
+                                    <button type="button" id="edit-description" class="ms-3" style="border: none; background: none;"> 
+                                        <img src="{{ url_for('static', path='/img/icons/edit.png') }}" width="20" alt="...">
+                                    </button>
+                                </div>    
+                            </form>
+                        {% else %}
+                            <form action="/collections/{{ username }}/playlist/{{ playlist.id }}/add_description" method="post" class="d-flex">
+                                <div id="description-container">
+                                    <!-- The 'Добавить описание' button -->
+                                    <button id="add-description-button">Добавить описание</button>
+                                </div>
+                            </form>
+                        {% endif %}
+                    </p>
+                    
+                    <div class="playlist-actions" style=" align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box;">
+                        <!-- Play button -->
+                        <button class="btn btn-success btn-md me-5 align-items-center"><img src="{{ url_for('static', path='/img/icons/play.png') }}" class="me-2" width="20px" />Слушать</button>
+                        
+                        <!-- Heart icon (using Emoji for simplicity, replace with an icon library if needed) -->
+                        <button class="btn btn-md me-5 favorite"><span 
+                            style="font-size: 30px; 
+                            border: 1px rgba(255, 0, 0, 0.153) solid; 
+                            border-radius: 50%; 
+                            padding: 3px;">❤️</span></button>
+                        
+                        <!-- More options button -->
+                        <!-- <button class="btn btn-md me-3"><span style="font-size: 30px;">...</span></button> -->
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-secondary dropdown-toggle btn-md" data-bs-toggle="dropdown" aria-expanded="false">
+                                ...
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Поделиться</a></li>
+                                <li><a class="dropdown-item link-danger" href="#">Удалить</a></li>
+                            </ul>
+                        </div>
+
+
+                        <!-- Upload track button -->
+                        <button class="btn btn-dark btn-sm p-2" style="margin-left: 40%;">Загрузить трек</button>
+                    </div>              
+
+                </div>
             </div>
         </div>
-        </div>
     </div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.9/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function replaceButtonWithtextarea() {
+        // Get the button element
+        var addButton = document.getElementById('add-description-button');
+        
+        // Create an textarea element
+        var textarea = document.createElement('textarea');
+        textarea.placeholder = 'описание...';
+        textarea.style.marginRight = '10px';
+        textarea.cols = '30';
+        textarea.rows = '2';
+        textarea.name = 'description';
+
+
+        // Create an OK button element
+        var okButton = document.createElement('button');
+        okButton.innerHTML = 'OK';
+        okButton.type = 'submit';
+        // Add an event listener to the OK button if needed
+        okButton.addEventListener('click', function() {
+            // Code to handle the OK button click event
+        });
+
+        // Replace the "Добавить описание" button with the textarea and the OK button
+        addButton.parentNode.replaceChild(textarea, addButton);
+        textarea.parentNode.insertBefore(okButton, textarea.nextSibling);
+    };
+
+    // You would also need to set up an event listener for the original button
+    document.getElementById('add-description-button').addEventListener('click', replaceButtonWithtextarea);
+</script>
+
+<script>
+    function editButtonWithtextarea() {
+        // Get the button element
+        var addButton = document.getElementById('edit-description');
+        // Create an textarea element
+        var textarea = document.createElement('textarea');
+        var currentDescription = document.getElementById('currentDescription').textContent;
+        textarea.value = currentDescription;
+        document.getElementById('currentDescription').remove();
+        textarea.style.marginRight = '10px';
+        textarea.style.resize ='both';
+        textarea.cols = '30';
+        textarea.rows = '2';
+        textarea.name = 'description';
+
+
+        // Create an OK button element
+        var okButton = document.createElement('button');
+        okButton.innerHTML = 'OK';
+        okButton.type = 'submit';
+        // Add an event listener to the OK button if needed
+        okButton.addEventListener('click', function() {
+            // Code to handle the OK button click event
+        });
+
+        // Replace the "Добавить описание" button with the textarea and the OK button
+        addButton.parentNode.replaceChild(textarea, addButton);
+        textarea.parentNode.insertBefore(okButton, textarea.nextSibling);
+    };
+
+    // You would also need to set up an event listener for the original button
+    document.getElementById('edit-description').addEventListener('click', editButtonWithtextarea);
+</script>
 {% endblock %}

@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Request
+from typing import Annotated
+from fastapi import APIRouter, Form, Request
 from fastapi.responses import RedirectResponse
 from sqlalchemy import select
 from .models import Playlist
@@ -37,4 +38,26 @@ async def create_new_playlist(request: Request, username: str, db: db_dependency
 async def get_collections_page(request: Request, username: str, playlist_id: int, db: db_dependency):
     playlist = await db.execute(select(Playlist).where(Playlist.id == playlist_id).join(User).where(User.username == username))
     current_playlist = playlist.scalar()
-    return templates.TemplateResponse('base_playlist.html', {'request': request, 'username': username, 'playlist_id': playlist_id, 'playlist': current_playlist})
+    return templates.TemplateResponse('base_playlist.html', {'request': request, 'username': username, 'playlist': current_playlist})
+
+
+@router.post('/{username}/playlist/{playlist_id}/add_description', status_code=status.HTTP_201_CREATED)
+async def add_playlist_description(request: Request, username: str, playlist_id: int, db: db_dependency, description: Annotated[str, Form()]):
+    playlist = await db.execute(select(Playlist).where(Playlist.id == playlist_id).join(User).where(User.username == username))
+    current_playlist = playlist.scalar()
+    current_playlist.description = description
+
+    await db.commit()
+
+    return RedirectResponse(url=f"/collections/{username}/playlist/{playlist_id}", status_code=303)
+
+
+@router.post('/{username}/playlist/{playlist_id}/edit_description', status_code=status.HTTP_205_RESET_CONTENT)
+async def add_playlist_description(request: Request, username: str, playlist_id: int, db: db_dependency, description: Annotated[str, Form()]):
+    playlist = await db.execute(select(Playlist).where(Playlist.id == playlist_id).join(User).where(User.username == username))
+    current_playlist = playlist.scalar()
+    current_playlist.description = description
+
+    await db.commit()
+
+    return RedirectResponse(url=f"/collections/{username}/playlist/{playlist_id}", status_code=303)

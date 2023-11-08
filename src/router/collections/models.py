@@ -13,8 +13,14 @@ class Playlist(Base):
     id: Mapped[int] = mapped_column(
         Integer, unique=True, primary_key=True, autoincrement=True
     )
+    selection_type: Mapped[str] = mapped_column(
+        String(length=150), nullable=False, default= 'Плейлист'
+    )
     name: Mapped[str] = mapped_column(
         String(length=150), nullable=False
+    )
+    description: Mapped[str] = mapped_column(
+        String(length=150), nullable=True
     )
     username_id: Mapped[str] = mapped_column(
         ForeignKey('user.id')
@@ -75,6 +81,9 @@ class Albom(Base):
 
     id: Mapped[int] = mapped_column(
         Integer, unique=True, primary_key=True, autoincrement=True
+    )
+    selection_type: Mapped[str] = mapped_column(
+        String(length=150), nullable=False, default= 'Альбом'
     )
     name: Mapped[str] = mapped_column(
         String(length=150), unique=True, nullable=False

@@ -9,7 +9,7 @@
     <div class="grid d-flex align-items-center">
         {% for playlist in playlists %}
         <div class="text-center">
-            <a href="#" style="text-decoration: none; color: #000;">
+            <a href="/collections/{{username}}/playlist/{{playlist.id}}" style="text-decoration: none; color: #000;">
                 <img src="{{ url_for('static', path=playlist.cover) }}" style="border-radius: 15px; width: 50%;" alt="...">
                 <h5>{{ playlist.name }}</h5>
             </a>
