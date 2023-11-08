@@ -1,0 +1,23 @@
+{% extends "base_auth.html" %}
+
+{% block head %}
+    <link href="{{url_for('static', path='/css/base_playlist.css')}}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    <div class="card mb-3 playlist" style="max-width: 89%;">
+        <div class="row g-0">
+        <div class="col-md-2">
+            <img src="{{ url_for('static', path=playlist.cover) }}" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 style="color: rgb(115, 115, 115);">Плейлист</h5>
+            <h2 class="card-title">{{playlist.name}}</h2>
+            <p class="card-text">Это более широкая карточка с вспомогательным текстом ниже в качестве естественного перехода к дополнительному контенту. Этот контент немного длиннее.</p>
+            <p class="card-text"><small class="text-body-secondary">Последнее обновление 3 мин. назад</small></p>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}

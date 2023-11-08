@@ -41,11 +41,11 @@ class Token(BaseModel):
 
 
 async def get_db():
-    db = AsyncSessionLocal()
+    async_db = AsyncSessionLocal()
     try:
-        yield db
+        yield async_db
     finally:
-        await db.close()
+        await async_db.close()
 
 
 db_dependency = Annotated[Session, Depends(get_db)]

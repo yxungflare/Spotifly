@@ -17,7 +17,7 @@ class Playlist(Base):
         String(length=150), nullable=False
     )
     username_id: Mapped[str] = mapped_column(
-        ForeignKey('user.id'), unique=True
+        ForeignKey('user.id')
     )
     songs_count: Mapped[int] = mapped_column(
         Integer, unique=False, default= 0

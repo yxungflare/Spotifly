@@ -16,7 +16,8 @@
         </div>
         {% endfor %}  
         <div class="text-center">
-            <a href="/collections/new" style="text-decoration: none; color: #000;">
+          <form action="/collections/{{username}}/playlist/new" method="post">
+            <button type="submit" style="text-decoration: none; border: none; background-color: white;">
                 <svg
                 style="border-radius: 15px;"
                 width="200"
@@ -47,7 +48,8 @@
                 </g>
               </svg>
                 <h5 style="color: white;">'</h5>
-            </a>
+            </button>
+          </form>
         </div>
     </div>
 {% endblock %}
