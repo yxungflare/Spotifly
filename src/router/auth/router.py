@@ -85,9 +85,10 @@ async def login_for_access_login(form_data: Annotated[OAuth2PasswordRequestForm,
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
                             detail='Could not validate user...')
-    token = create_access_token(user.username, user.id, timedelta(minutes=20))
-    
-    return RedirectResponse(url=f"/home/{user.username}", status_code=303)
+    token = create_access_token(user.username, user.id, timedelta(minutes=2000))
+    while token:
+        print(token)
+        return RedirectResponse(url=f"/home/{user.username}", status_code=303)
 
 async def authenticate_user(username: str, password: str, db: db_dependency):
     result = await db.execute(select(User).where(User.username == username))

@@ -61,3 +61,15 @@ async def add_playlist_description(request: Request, username: str, playlist_id:
     await db.commit()
 
     return RedirectResponse(url=f"/collections/{username}/playlist/{playlist_id}", status_code=303)
+
+
+@router.post('/{username}/playlist/{playlist_id}/edit_playlist_name', status_code=status.HTTP_205_RESET_CONTENT)
+async def add_playlist_name(request: Request, username: str, playlist_id: int, db: db_dependency, name: Annotated[str, Form()]):
+    playlist = await db.execute(select(Playlist).where(Playlist.id == playlist_id).join(User).where(User.username == username))
+    current_playlist = playlist.scalar()
+    current_playlist.name = name
+
+    await db.commit()
+
+    return RedirectResponse(url=f"/collections/{username}/playlist/{playlist_id}", status_code=303)
+
