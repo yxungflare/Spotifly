@@ -1,11 +1,14 @@
 from typing import Annotated
-from fastapi import APIRouter, Form, Request
+from fastapi import APIRouter, File, Form, Request, UploadFile
 from fastapi.responses import RedirectResponse
 from sqlalchemy import select
 from .models import Playlist
 from router.auth.models import User
 from router.auth.router import templates, db_dependency
 from starlette import status
+
+import os
+import shutil
 
 router = APIRouter(
     prefix='/collections',
@@ -53,7 +56,7 @@ async def add_playlist_description(request: Request, username: str, playlist_id:
 
 
 @router.post('/{username}/playlist/{playlist_id}/edit_description', status_code=status.HTTP_205_RESET_CONTENT)
-async def add_playlist_description(request: Request, username: str, playlist_id: int, db: db_dependency, description: Annotated[str, Form()]):
+async def edit_playlist_description(request: Request, username: str, playlist_id: int, db: db_dependency, description: Annotated[str, Form()]):
     playlist = await db.execute(select(Playlist).where(Playlist.id == playlist_id).join(User).where(User.username == username))
     current_playlist = playlist.scalar()
     current_playlist.description = description
@@ -64,10 +67,36 @@ async def add_playlist_description(request: Request, username: str, playlist_id:
 
 
 @router.post('/{username}/playlist/{playlist_id}/edit_playlist_name', status_code=status.HTTP_205_RESET_CONTENT)
-async def add_playlist_name(request: Request, username: str, playlist_id: int, db: db_dependency, name: Annotated[str, Form()]):
+async def edit_playlist_name(request: Request, username: str, playlist_id: int, db: db_dependency, name: Annotated[str, Form()]):
     playlist = await db.execute(select(Playlist).where(Playlist.id == playlist_id).join(User).where(User.username == username))
     current_playlist = playlist.scalar()
     current_playlist.name = name
+
+    await db.commit()
+
+    return RedirectResponse(url=f"/collections/{username}/playlist/{playlist_id}", status_code=303)
+
+
+@router.post('/{username}/playlist/{playlist_id}/edit_playlist_cover', status_code=status.HTTP_205_RESET_CONTENT)
+async def edit_playlist_cover(request: Request, username: str, playlist_id: int, db: db_dependency,  cover: UploadFile = File()):
+    upload_folder = f"./static/img/playlists/{username}/{str(playlist_id)}"
+
+    cover.filename = 'playlist_cover'
+
+    static = f'/img/playlists/{username}/{str(playlist_id)}'
+    # Создаем директорию, если она не существует
+    os.makedirs(upload_folder, exist_ok=True)
+
+    # Полный путь к файлу
+    file_path = os.path.join(upload_folder, cover.filename)
+
+    # Записываем файл
+    with open(file_path, "wb") as file:
+        shutil.copyfileobj(cover.file, file)
+
+    playlist = await db.execute(select(Playlist).where(Playlist.id == playlist_id).join(User).where(User.username == username))
+    current_playlist = playlist.scalar()
+    current_playlist.cover = f'{static}/{cover.filename}' 
 
     await db.commit()
 
