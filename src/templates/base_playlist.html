@@ -61,18 +61,16 @@
                             padding: 3px;">❤️</span></button>
                         
                         <!-- More options button -->
-                        <!-- <button class="btn btn-md me-3"><span style="font-size: 30px;">...</span></button> -->
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-secondary dropdown-toggle btn-md" data-bs-toggle="dropdown" aria-expanded="false">
-                                ...
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Поделиться</a></li>
-                                <li><a class="dropdown-item link-danger" href="#">Удалить</a></li>
-                            </ul>
+                          <button type="button" class="btn btn-secondary dropdown-toggle btn-md" data-bs-toggle="dropdown" aria-expanded="false">
+                            ...
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><button type="button" onclick="copyCurrentURL()" class="dropdown-item" id="liveToastBtn">Поделиться</button></li>
+                            <li><a class="dropdown-item link-danger" href="/collections/{{ username }}" onclick="delete_playlist();">Удалить</a></li>
+                          </ul>
                         </div>
-
-
+                        
                         <!-- Upload track button -->
                         <button class="btn btn-dark btn-sm p-2" style="margin-left: 40%;">Загрузить трек</button>
                     </div>              
@@ -81,26 +79,36 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+                        
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <img src="{{ url_for('static', path='/img/icons/logo.png') }}" class="rounded me-2" width="20" height="20" alt="...">
+            <strong class="me-auto">Spotifly</strong>
+            <small>Только что</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
+          </div>
+          <div class="toast-body">
+            Скопиравано!
+          </div>
+        </div>
+    </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.9/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="{{url_for('static', path='/js/base_playlist.js')}}"></script>
+
 <script>
-    function updateFormAction(formId, newAction) {
-        document.getElementById(formId).action = newAction;
-    }
-
-    function handleFileInput() {
-        const fileInput = document.getElementById('file-input');
-        const formId = fileInput.getAttribute('data-form-id');
-
-        // Обновляем action формы, используя путь для загрузки обложки
-        updateFormAction(formId, `/collections/{{ username }}/playlist/{{ playlist.id }}/edit_playlist_cover`);
-
-        // Отправляем форму сразу после выбора файла
-        document.getElementById(formId).submit();
-    }
+    document.getElementById('liveToastBtn').addEventListener('click', function () {
+      var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+      toast.show();
+    });
 </script>
 
+<script>
+    function delete_playlist(){
+        fetch('/collections/{{username}}/playlist/{{ playlist.id }}/delete', { method: 'DELETE' })
+        return false;
+}
+</script>
 {% endblock %}

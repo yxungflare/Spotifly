@@ -67,6 +67,7 @@ document.getElementById('edit-name').addEventListener('click', editButtonWithNam
 // document.getElementById('currentName').addEventListener('mouseout', editViewPlaylistName);
 
 function editViewPlaylistCover(){
+
     icon_button = document.getElementById('edit-cover')
     icon_button.style.display = 'none';
 
@@ -123,3 +124,62 @@ function editViewPlaylistCover(){
 
 // window.onload = editViewPlaylistName
 window.onload = editViewPlaylistCover
+
+
+function updateFormAction(formId, newAction) {
+    document.getElementById(formId).action = newAction;
+}
+
+function handleFileInput() {
+    const fileInput = document.getElementById('file-input');
+    const formId = fileInput.getAttribute('data-form-id');
+
+    // Обновляем action формы, используя путь для загрузки обложки
+    updateFormAction(formId, `/collections/{{ username }}/playlist/{{ playlist.id }}/edit_playlist_cover`);
+
+    // Отправляем форму сразу после выбора файла
+    document.getElementById(formId).submit();
+}
+
+
+function updateFormAction(formId, newAction) {
+    document.getElementById(formId).action = newAction;
+}
+
+function handleFileInput() {
+    const fileInput = document.getElementById('file-input');
+    const formId = fileInput.getAttribute('data-form-id');
+
+    // Обновляем action формы, используя путь для загрузки обложки
+    updateFormAction(formId, `/collections/{{ username }}/playlist/{{ playlist.id }}/edit_playlist_cover`);
+
+    // Отправляем форму сразу после выбора файла
+    document.getElementById(formId).submit();
+}
+
+
+function copyCurrentURL(){
+    // Получаем текущий URL-адрес
+    var currentURL = window.location.href;
+
+    // Создаем временный элемент textarea для копирования текста
+    var tempTextArea = document.createElement('textarea');
+    tempTextArea.value = currentURL;
+
+    // Делаем его невидимым
+    tempTextArea.style.position = 'absolute';
+    tempTextArea.style.left = '-9999px';
+
+    // Добавляем его на страницу
+    document.body.appendChild(tempTextArea);
+
+    // Выделяем текст в textarea
+    tempTextArea.select();
+    tempTextArea.setSelectionRange(0, currentURL.length);
+
+    // Копируем выделенный текст в буфер обмена
+    document.execCommand('copy');
+
+    // Удаляем временный элемент textarea
+    document.body.removeChild(tempTextArea);
+}

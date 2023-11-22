@@ -102,3 +102,15 @@ async def edit_playlist_cover(request: Request, username: str, playlist_id: int,
 
     return RedirectResponse(url=f"/collections/{username}/playlist/{playlist_id}", status_code=303)
 
+
+@router.delete('/{username}/playlist/{playlist_id}/delete', status_code=status.HTTP_205_RESET_CONTENT)
+async def delete_current_playlist(request: Request, username: str, playlist_id: int, db: db_dependency):
+    
+    playlist = await db.execute(select(Playlist).where(Playlist.id == playlist_id).join(User).where(User.username == username))
+    current_playlist = playlist.scalar()
+    await db.delete(current_playlist)
+
+    await db.commit()
+
+    return RedirectResponse(url=f"/collections/{username}", status_code=303)
+    
