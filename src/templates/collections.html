@@ -7,7 +7,7 @@
 {% block content %}
     <h2 class="text-center mb-5">Плейлисты</h2>
 
-    <div class="container">
+    <div class="container mb-5">
       <div class="row align-items-center col-12">
           <div class="col-md-4">
               <div class="card mb-4 d-flex align-items-center" style="border: none;">
@@ -33,6 +33,31 @@
       </div>
   </div>
   
+  <h2 class="text-center mb-5">Также вам понравилось</h2>
+  <div class="container mb-5">
+    <div class="row align-items-center col-12">
+
+        {% for playlist in playlists %}
+            {% if playlist.is_liked == True %}
+              <div class="col-md-4">
+                  <div class="card mb-1 d-flex align-items-center" style="border: none;">
+                      <img src="{{ url_for('static', path=playlist.cover) }}" class="card-img-top mx-0" style="max-height: 280px; max-width: 280px; border-radius: 15px;" alt="...">
+                      <div class="card-body text-center">
+                          <h5 class="card-title">{{ playlist.name }}</h5>
+                          <a href="/collections/{{ username }}/playlist/{{ playlist.id }}" class="stretched-link"></a>
+                      </div>
+                  </div>
+              </div>
+            {% endif %}
+        {% endfor %}
+
+        {% if favorite_playlists_couter == 0 %} 
+          <h4 class="text-center mb-5" style="font-weight: 100;">Пока пусто</h4>
+        {% endif %}
+    </div>
+  </div>
+
+
   <script>
     add_playlist_button = document.getElementById('add_playlist');
     add_playlist_button.addEventListener('click', function() {

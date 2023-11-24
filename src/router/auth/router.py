@@ -73,6 +73,7 @@ async def create_user(db: db_dependency,
     create_favorite_playlist = Playlist(
         name = 'Мне нравится',
         username_id = current_user.id,
+        is_liked = True,
     )
     
     db.add(create_favorite_playlist)

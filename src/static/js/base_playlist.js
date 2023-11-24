@@ -27,8 +27,47 @@ function editButtonWithtextarea() {
     textarea.parentNode.insertBefore(okButton, textarea.nextSibling);
 };
 
+
+if(document.getElementById('edit-description')){
 // You would also need to set up an event listener for the original button
-document.getElementById('edit-description').addEventListener('click', editButtonWithtextarea);
+    document.getElementById('edit-description').addEventListener('click', editButtonWithtextarea);
+}
+
+
+// Добавляем описание
+function addDescription() {
+    var addButton = document.getElementById('add-description-button');
+    if(addButton){
+        var currentDescription = addButton.textContent;
+        console.log(currentDescription);
+        var textarea = document.createElement('textarea');
+        textarea.value = currentDescription;
+        textarea.style.marginRight = '10px';
+        textarea.style.resize ='both';
+        textarea.cols = '30';
+        textarea.rows = '2';
+        textarea.name = 'description';
+
+
+    // Create an OK button element
+        var okButton = document.createElement('button');
+        okButton.innerHTML = 'OK';
+        okButton.type = 'submit';
+    // // Add an event listener to the OK button if needed
+        okButton.addEventListener('click', function() {
+        //     // Code to handle the OK button click event
+        });
+
+    // // Replace the "Добавить описание" button with the textarea and the OK button
+        addButton.parentNode.replaceChild(textarea, addButton);
+        textarea.parentNode.insertBefore(okButton, textarea.nextSibling);
+    }
+}
+
+
+if(document.getElementById('add-description-button')){
+    document.getElementById('add-description-button').addEventListener('click', addDescription);
+}
 
 
 function editButtonWithName() {
@@ -60,11 +99,11 @@ function editButtonWithName() {
     input.parentNode.insertBefore(okButton, input.nextSibling);
 };
 
-document.getElementById('edit-name').addEventListener('click', editButtonWithName);
 
-// You would also need to set up an event listener for the original button
-// document.getElementById('currentName').addEventListener('mouseover', editViewPlaylistName);
-// document.getElementById('currentName').addEventListener('mouseout', editViewPlaylistName);
+if(document.getElementById('edit-name')){
+    document.getElementById('edit-name').addEventListener('click', editButtonWithName);
+}
+
 
 function editViewPlaylistCover(){
 
@@ -104,25 +143,27 @@ function editViewPlaylistCover(){
     });
 
 
-    icon_button_description = document.getElementById('edit-description')
-    icon_button_description.style.display = 'none';
-
-    playlist_description = document.getElementById('currentDescription')
-    playlist_description.addEventListener('mouseover', function() {
-        icon_button_description.style.display = 'block';
-    });
-    playlist_description.addEventListener('mouseout', function() {
-        icon_button_description.addEventListener('mouseover', function(){
-            icon_button_description.style.display = 'block';
-        })
-        icon_button_description.addEventListener('mouseout', function(){
-            icon_button_description.style.display = 'none';
-        })
+    if(document.getElementById('edit-description')){
+        icon_button_description = document.getElementById('edit-description')
         icon_button_description.style.display = 'none';
-    });
+
+        playlist_description = document.getElementById('currentDescription')
+        playlist_description.addEventListener('mouseover', function() {
+            icon_button_description.style.display = 'block';
+        });
+        playlist_description.addEventListener('mouseout', function() {
+            icon_button_description.addEventListener('mouseover', function(){
+                icon_button_description.style.display = 'block';
+            })
+            icon_button_description.addEventListener('mouseout', function(){
+                icon_button_description.style.display = 'none';
+            })
+            icon_button_description.style.display = 'none';
+        });
+    }
 }
 
-// window.onload = editViewPlaylistName
+
 window.onload = editViewPlaylistCover
 
 
@@ -130,21 +171,6 @@ function updateFormAction(formId, newAction) {
     document.getElementById(formId).action = newAction;
 }
 
-function handleFileInput() {
-    const fileInput = document.getElementById('file-input');
-    const formId = fileInput.getAttribute('data-form-id');
-
-    // Обновляем action формы, используя путь для загрузки обложки
-    updateFormAction(formId, `/collections/{{ username }}/playlist/{{ playlist.id }}/edit_playlist_cover`);
-
-    // Отправляем форму сразу после выбора файла
-    document.getElementById(formId).submit();
-}
-
-
-function updateFormAction(formId, newAction) {
-    document.getElementById(formId).action = newAction;
-}
 
 function handleFileInput() {
     const fileInput = document.getElementById('file-input');

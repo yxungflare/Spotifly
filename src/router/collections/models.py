@@ -1,4 +1,4 @@
-from sqlalchemy import BLOB, ForeignKey, Integer, String
+from sqlalchemy import BLOB, Boolean, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 import datetime
@@ -11,7 +11,7 @@ class Playlist(Base):
     __tablename__ = 'playlist'
 
     id: Mapped[int] = mapped_column(
-        Integer, unique=True, primary_key=True, autoincrement=True
+        Integer, unique=True, primary_key=True
     )
     selection_type: Mapped[str] = mapped_column(
         String(length=150), nullable=False, default= 'Плейлист'
@@ -34,7 +34,9 @@ class Playlist(Base):
     cover:  Mapped[str] = mapped_column(
         String, default='/img/playlists/favorite.jpg'
     )
-
+    is_liked: Mapped[bool] = mapped_column(
+        Boolean, default=False, nullable=False
+    )
 
 class Song(Base):
     __tablename__ = 'song'

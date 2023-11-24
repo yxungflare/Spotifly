@@ -20,7 +20,14 @@ router = APIRouter(
 async def get_collections_page(request: Request, username: str, db: db_dependency):
     playlists = await db.execute(select(Playlist).join(User).where(User.username == username))
     playlists_list = playlists.scalars().all()
-    return templates.TemplateResponse('collections.html', {'request': request, 'username': username, 'playlists': playlists_list})
+
+
+    favorite_playlists_couter = 0
+    for playlist in playlists_list:
+        if playlist.is_liked:
+            favorite_playlists_couter += 1
+    print(favorite_playlists_couter)
+    return templates.TemplateResponse('collections.html', {'request': request, 'username': username, 'playlists': playlists_list, 'favorite_playlists_couter': favorite_playlists_couter})
 
 
 @router.post('/{username}/playlist/new', status_code=status.HTTP_201_CREATED)
@@ -113,4 +120,13 @@ async def delete_current_playlist(request: Request, username: str, playlist_id: 
     await db.commit()
 
     return RedirectResponse(url=f"/collections/{username}", status_code=303)
+
+
+@router.post('/{username}/playlist/{playlist_id}/make_favorite', status_code=status.HTTP_205_RESET_CONTENT)
+async def make_favorite(request: Request, username: str, playlist_id: int, db: db_dependency):
+    playlist = await db.execute(select(Playlist).where(Playlist.id == playlist_id).join(User).where(User.username == username))
+    current_playlist = playlist.scalar()
+
+    current_playlist.is_liked = True
     
+    await db.commit()
