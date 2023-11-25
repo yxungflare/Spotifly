@@ -49,17 +49,19 @@
                         {% endif %}
                     </p>
                     
-                    <div class="playlist-actions" style=" align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box;">
+                    <div class="playlist-actions d-flex" style=" align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box;">
                         <!-- Play button -->
                         <button class="btn btn-success btn-md me-5 align-items-center"><img src="{{ url_for('static', path='/img/icons/play.png') }}" class="me-2" width="20px" />Слушать</button>
                         
                         <!-- Heart icon (using Emoji for simplicity, replace with an icon library if needed) -->
-                        <a href="javascript:void(0);" onclick="make_favorite();" class="btn btn-md me-5 favorite"><span 
-                            style="font-size: 30px; 
-                            border: 1px rgba(255, 0, 0, 0.153) solid; 
-                            border-radius: 50%; 
-                            padding: 3px;">❤️</span></a>
-                        
+                        {% if playlist.is_liked == False %}
+                            <a href="/collections/{{username}}/playlist/{{ playlist.id }}" onclick="make_favorite();" class="btn btn-md me-5 not_favorite" style="border: none;">
+                                <span class="not_favorite_heart_icon">❤️</span></a>
+                        {% else %}
+                        <a href="/collections/{{username}}/playlist/{{ playlist.id }}" onclick="make_not_favorite();" class="btn btn-md me-5 favorite" style="border: none;">
+                            <span class="favorite_heart_icon">❤️</span></a>
+
+                        {% endif %}
                         <!-- More options button -->
                         <div class="btn-group" role="group">
                           <button type="button" class="btn btn-secondary dropdown-toggle btn-md" data-bs-toggle="dropdown" aria-expanded="false">
@@ -71,15 +73,48 @@
                           </ul>
                         </div>
                         
+                        
                         <!-- Upload track button -->
-                        <button class="btn btn-dark btn-sm p-2" style="margin-left: 40%;">Загрузить трек</button>
+                        <form action="/collections/{{ username }}/playlist/{{ playlist.id }}/add_song" id="form-add-song" method="post" style="margin-left: 40%;" enctype="multipart/form-data">
+                            <button type="button" class="btn btn-dark btn-sm p-2"  onclick="document.getElementById('file-song').click();">Загрузить трек</button>
+                            <input type="file" id="file-song" name="song" style="display: none" accept=".mp3, .wav, .ogg" data-form-id="form-add-song" onchange="addSong();">
+                        </form>
                     </div>              
 
                 </div>
             </div>
         </div>
     </div>
+    
+    <div class="card mb-3 playlist" id="content" style="max-width: 89%;">
+        {% for song in songs %}
+            <div class="song d-flex align-items-center position-relative col-12">
+                <div class="song_info d-flex align-items-center col-10">
+                    <img src="{{ url_for('static', path='/img/icons/logo.png') }}" class="rounded me-2" width="20" height="20" alt="">
+                    <div class="song_name_and_songs_albom d-block ms-2 col-6">
+                        <h6 class="d-block m-0">{{song.name}}</h6>
+                        <span class="d-block">albom</span>
+                    </div>
+                </div>
 
+                <!-- Heart icon (using Emoji for simplicity, replace with an icon library if needed) -->
+                {% if playlist.is_liked == False %}
+                <a href="/collections/{{username}}/playlist/{{ playlist.id }}" onclick="make_favorite();" class="btn btn-md not_favorite col-1">
+                    <span class="not_favorite_heart_icon">❤️</span></a>
+                {% else %}
+                <a href="/collections/{{username}}/playlist/{{ playlist.id }}" onclick="make_not_favorite();" class="btn btn-md favorite col-1">
+                    <span class="favorite_heart_icon">❤️</span></a>
+
+                <!-- Song's duration -->
+                
+                <div class="song_duration col-1 text-center ">
+                    <span>{{song.duration_song}}</span>
+                </div>
+            </div>
+                {% endif %}
+
+        {% endfor %}
+    </div>
                         
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -131,12 +166,31 @@
     }
 
 
+    function addSong() {
+        const fileInput = document.getElementById('file-song');
+        const formId = fileInput.getAttribute('data-form-id');
+
+        // Обновляем action формы, используя путь для загрузки обложки
+        updateFormAction(formId, `/collections/{{ username }}/playlist/{{ playlist.id }}/add_song`);
+
+        // Отправляем форму сразу после выбора файла
+        document.getElementById(formId).submit();
+    }
+
+
     function make_favorite(){
         var username = '{{ username }}';
         var playlist_id = '{{ playlist.id }}';
         console.log(username, playlist_id)
         fetch('/collections/{{username}}/playlist/{{ playlist.id }}/make_favorite', { method: 'POST' })
-        return false;
+    }
+
+
+    function make_not_favorite(){
+        var username = '{{ username }}';
+        var playlist_id = '{{ playlist.id }}';
+        console.log(username, playlist_id)
+        fetch('/collections/{{username}}/playlist/{{ playlist.id }}/make_not_favorite', { method: 'POST' })
     }
 </script>
 
