@@ -5,7 +5,6 @@ import datetime
 
 from database import Base
 
-
 class Playlist(Base):
     __tablename__ = 'playlist'
 
@@ -44,13 +43,13 @@ class Song(Base):
         Integer, unique=True, primary_key=True, autoincrement=True
     )
     name: Mapped[str] = mapped_column(
-        String(length=150), unique=True, nullable=False
+        String(length=150), unique=False, nullable=False
     )
     username_id: Mapped[str] = mapped_column(
-        ForeignKey('user.id'), unique=False
+        ForeignKey('user.id'), unique=False, nullable=True
     )
     playlist_id: Mapped[str] = mapped_column(
-        ForeignKey('playlist.id'), unique=False
+        ForeignKey('playlist.id'), unique=False, nullable=True
     )
     author_id: Mapped[str] = mapped_column(
         ForeignKey('author.id'), unique=False, nullable=True
@@ -63,6 +62,9 @@ class Song(Base):
     ) 
     creation_date: Mapped[datetime.datetime] = mapped_column(
         nullable=True, default=datetime.datetime.utcnow()
+    )
+    is_liked: Mapped[bool] = mapped_column(
+        Boolean, default=False, nullable=True
     )
     
 

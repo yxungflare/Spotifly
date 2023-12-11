@@ -39,7 +39,6 @@ function addDescription() {
     var addButton = document.getElementById('add-description-button');
     if(addButton){
         var currentDescription = addButton.textContent;
-        console.log(currentDescription);
         var textarea = document.createElement('textarea');
         textarea.value = currentDescription;
         textarea.style.marginRight = '10px';
@@ -208,4 +207,197 @@ function copyCurrentURL(){
 
     // Удаляем временный элемент textarea
     document.body.removeChild(tempTextArea);
+}
+
+function cursorSong(song_id, playlists, username, song_id_just_digits, playlist_id_array){
+    // Добавим мусорку
+
+    const svgCode = `
+      <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        viewBox="0 0 791.908 791.908" style="enable-background:new 0 0 791.908 791.908;" xml:space="preserve" width="25" height="25">
+        <g>
+          <path d="M648.587,99.881H509.156C500.276,43.486,452.761,0,394.444,0S287.696,43.486,279.731,99.881H142.315
+            c-26.733,0-48.43,21.789-48.43,48.43v49.437c0,24.719,17.761,44.493,41.564,47.423V727.64c0,35.613,28.655,64.268,64.268,64.268
+            h392.475c35.613,0,64.268-28.655,64.268-64.268V246.087c23.711-3.937,41.564-23.711,41.564-47.423v-49.437
+            C697.017,121.67,675.228,99.881,648.587,99.881z M394.444,36.62c38.543,0,70.219,26.733,77.085,63.261H316.351
+            C324.225,64.268,355.901,36.62,394.444,36.62z M618.924,728.739c0,14.831-11.901,27.648-27.648,27.648H198.71
+            c-14.831,0-27.648-11.901-27.648-27.648V247.185h446.948v481.554H618.924z M660.397,197.748c0,6.958-4.944,11.902-11.902,11.902
+            H142.223c-6.958,0-11.902-4.944-11.902-11.902v-49.437c0-6.958,4.944-11.902,11.902-11.902h505.265
+            c6.958,0,11.901,4.944,11.901,11.902v49.437H660.397z M253.09,661.45V349.081c0-9.887,7.873-17.761,17.761-17.761
+            s17.761,7.873,17.761,17.761V661.45c0,9.887-7.873,17.761-17.761,17.761C260.964,680.309,253.09,671.337,253.09,661.45z
+             M378.606,661.45V349.081c0-9.887,7.873-17.761,17.761-17.761c9.887,0,17.761,7.873,17.761,17.761V661.45
+            c0,9.887-7.873,17.761-17.761,17.761C386.57,680.309,378.606,671.337,378.606,661.45z M504.212,661.45V349.081
+            c0-9.887,7.873-17.761,17.761-17.761s17.761,7.873,17.761,17.761V661.45c0,9.887-7.873,17.761-17.761,17.761
+            C513.093,680.309,504.212,671.337,504.212,661.45z"/>
+        </g>
+      </svg>
+    `;
+
+    // Создаем новый элемент SVG
+    const svgElement = new DOMParser().parseFromString(svgCode, 'image/svg+xml').documentElement;
+
+    // Получаем контейнер по идентификатору
+    const container_for_util_basket = document.getElementById(song_id);
+    // Очищаем контейнер
+    container_for_util_basket.innerHTML = '';
+
+    // Добавляем SVG в контейнер
+    container_for_util_basket.appendChild(svgElement);
+
+
+    // Теперь убирем время проигрывания и вставим дополнительные кнопки
+    songDuration = document.getElementById('song_duration_' + song_id);
+    songDuration.style.display = 'none';
+
+    const buttonsWithPlaylists = () => {
+        let buttonsGroupCode = '';
+    
+        // Вне цикла создаем начало и конец группы кнопок
+        buttonsGroupCode += `
+            <div class="btn-group" role="group">
+                <button type="button" class="btn dropdown-toggle btn-md" data-bs-toggle="dropdown" style="background-color: rgba(172, 255, 47, 0.397);" aria-expanded="false">
+                    ...
+                </button>
+                <ul class="dropdown-menu">
+                    <li><button type="button" onclick="copyCurrentSong()" class="dropdown-item text-end" id="liveToastBtn">Поделиться</button></li>
+                    <li><button type="button" data-bs-toggle="modal" data-bs-target="#addToPlaylistModal" onclick="addToPlaylist()" class="dropdown-item text-end" id="liveToastBtn"><b>+</b> Добавить в плейлист </button></li>
+                </ul>
+        
+                <!-- Модальное окно -->
+                <div class="modal fade" id="addToPlaylistModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Добавить в плейлист</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="list-group">`;
+         
+        for (const key in playlists) {
+            buttonsGroupCode += `
+                <li class="list-group-item">
+                    <input class="form-check-input me-1" type="checkbox" value="${key}" id="${key}CheckboxStretched" name="${key}">
+                    <label class="form-check-label stretched-link" for="${key}CheckboxStretched">${playlists[key]}</label>
+                </li>`;
+        }
+        
+
+        // Завершаем группу кнопок
+        buttonsGroupCode += `
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                <button type="button" onclick="addSongToAnotherPlaylist('${username}', ${song_id_just_digits}, ${JSON.stringify(playlist_id_array)});" class="btn btn-primary">ОК</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+    
+        return buttonsGroupCode;
+    };
+    
+    const buttonsGroupHTML = buttonsWithPlaylists(); // Генерируем HTML код
+    
+    // Получаем контейнер по идентификатору
+    const containerForGroupButton = document.getElementById('container_for_group_button_' + song_id);
+    containerForGroupButton.style.display = 'block';
+    
+    // Очищаем контейнер
+    containerForGroupButton.innerHTML = '';
+    
+    // Добавляем созданный HTML в контейнер
+    containerForGroupButton.insertAdjacentHTML('beforeend', buttonsGroupHTML);
+    
+}
+
+function deleteCursorSong(song_id){
+    const container_for_util_basket = document.getElementById(song_id);
+    container_for_util_basket.innerHTML = '';
+
+    const container_for_group_button = document.getElementById('container_for_group_button_' + song_id);
+    container_for_group_button.innerHTML = '';
+    container_for_group_button.style.display ='none';
+
+    songDuration = document.getElementById('song_duration_' + song_id);
+    songDuration.style.display ='block';
+}
+
+
+function delete_playlist(username, playlist_id){
+    fetch('/collections/' + username + '/playlist/' + playlist_id + '/delete', { method: 'DELETE' })
+    return false;
+}
+
+
+function updateFormAction(formId, newAction) {
+    document.getElementById(formId).action = newAction;
+    }
+
+function handleFileInput(username, playlist_id) {
+    const fileInput = document.getElementById('file-input');
+    const formId = fileInput.getAttribute('data-form-id');
+    // Обновляем action формы, используя путь для загрузки обложки
+    updateFormAction(formId, `/collections/` + username + `/playlist/` + playlist_id + `/edit_playlist_cover`);
+    // Отправляем форму сразу после выбора файла
+    document.getElementById(formId).submit();
+}
+
+function addSong(username, playlist_id) {
+    const fileInput = document.getElementById('file-song');
+    const formId = fileInput.getAttribute('data-form-id');
+
+    // Обновляем action формы, используя путь для загрузки обложки
+    updateFormAction(formId, `/collections/` + username + `/playlist/` + playlist_id + `/add_song`);
+
+    // Отправляем форму сразу после выбора файла
+    document.getElementById(formId).submit();
+}
+
+
+function make_favorite_playlist(username, playlist_id){
+    fetch('/collections/' + username + '/playlist/' + playlist_id + '/make_favorite', { method: 'POST' })
+}
+
+function make_not_favorite_playlist(username, playlist_id){
+    fetch('/collections/' + username + '/playlist/' + playlist_id + '/make_not_favorite', { method: 'POST' })
+}
+
+function delete_song(song_id, username, playlist_id){
+    fetch('/collections/' + username + '/playlist/' + playlist_id + '/delete_song/'+song_id, { method: 'DELETE' })
+    location.reload();
+}
+
+function copyCurrentSong(){
+    // Урл Ссылка на альбом с данной песней + выделение данной песни, что именно она скопирована 
+    // console.log({'status': 'success!'})
+}
+
+function addToPlaylist(){
+    // Создаем модальное окно, в котором дадим пользователю право выбора, в какой плейлист ему добавить песню
+    // console.log({'status': 'success!'})
+}
+
+
+function addSongToAnotherPlaylist(username, song_id, playlist_id_array){
+    active_checkbox_playlists = []
+    for(p=0; p < playlist_id_array.length; p++){
+        checkbox = document.getElementById(playlist_id_array[p] +'CheckboxStretched')
+        if(checkbox.checked){
+            active_checkbox_playlists[p] = checkbox;
+            fetch('/collections/' + username + '/playlist/' + checkbox.value + '/add_song/' + song_id, { method: 'POST' });
+            location.reload();     
+        }
+    }
+}
+
+
+function make_favorite_song(username, song_id){
+    fetch('/collections/' + username + '/make_favorite_song/' + song_id, { method: 'POST' })
+}
+
+function make_not_favorite_song(username, song_id){
+    fetch('/collections/' + username + '/make_not_favorite_song/' + song_id, { method: 'POST' })
 }

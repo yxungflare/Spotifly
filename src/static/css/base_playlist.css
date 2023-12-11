@@ -36,6 +36,12 @@
   height: 50px;
 }
 
+div .song:hover{
+  cursor: pointer;
+  border: greenyellow 1px solid;
+}
+
 audio::-webkit-media-controls-panel {
   background-color: white;
 }
+
