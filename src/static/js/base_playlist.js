@@ -401,3 +401,48 @@ function make_favorite_song(username, song_id){
 function make_not_favorite_song(username, song_id){
     fetch('/collections/' + username + '/make_not_favorite_song/' + song_id, { method: 'POST' })
 }
+
+// .playlist-list
+// submit_find_song
+
+
+document.querySelector('#submit_find_song').oninput = function(){
+    
+    var emptyFound = document.getElementById('emptyFound');
+
+    // если не существует
+    if(emptyFound){
+        emptyFound.remove();
+    }
+    emptyFound = document.createElement('div');
+    emptyFound.innerText = 'Не найдено';
+    emptyFound.id = 'emptyFound';
+    emptyFound.style.display = 'none';
+    document.body.appendChild(emptyFound);
+
+    let val = this.value.toLowerCase();
+    let songBlock = document.querySelectorAll('.song-list')
+
+    let songCounter = 0
+
+    var regex = new RegExp(val);
+    for(let song of songBlock){
+        let songValue = song.querySelector('.song-name').innerText.toLowerCase();
+        if(val != ''){
+            if(!regex.test(songValue)){
+                song.style.display = 'none';
+                songCounter += 1
+            }
+        }
+
+        else{
+            song.style.display = 'flex';
+        }
+    }
+
+    console.log(songCounter, songBlock.length)
+    if(songCounter == songBlock.length){
+        emptyFound.style.textAlign  = 'center';
+        emptyFound.style.display = 'block';
+    }
+};

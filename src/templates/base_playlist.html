@@ -87,20 +87,16 @@
     </div>
 
     {% if songs_couter == 1 %}
-    <form class="col-12 playlist d-flex" role="search" style="max-width: 89%;" role="search" action="/collections/{{username}}/playlist/{{ playlist.id }}/find_song" method="post">
-        <input class="form-control me-2 mb-3" type="search" id="submit_find_song" placeholder="Поиск" aria-label="Search" name="song_name">
-        {% if version_songs_couter == 2 %}
-            <a href="/collections/{{ username }}/playlist/{{ playlist.id }}" class="link-danger link-underline-opacity-0 mb-3 text-center pt-1" style="font-weight: 700; font-size: larger;">X</a>
-        {% endif %}
-    </form>
-        <div class="card mb-3 playlist" id="content" style="max-width: 89%;">
+    <input class="form-control me-2 mb-3" type="search" style="max-width: 89%; margin-left: 80px;" id="submit_find_song" placeholder="Поиск" aria-label="Search" name="song_name">
+
+        <div class="card mb-3 playlist " id="content" style="max-width: 89%;">
             {% for song, author_name in songs %}
-                <div id="song" class="song d-flex align-items-center position-relative col-12" onmouseenter="cursorSong('song-{{song.id}}', {{playlists}}, '{{username}}', {{song.id}}, {{playlist_id_array}});" onmouseleave="deleteCursorSong('song-{{song.id}}');"> 
-                    <div class="song_info d-flex align-items-center col-9">
+                <div id="song" class="song-list song align-items-center position-relative col-12" onmouseenter="cursorSong('song-{{song.id}}', {{playlists}}, '{{username}}', {{song.id}}, {{playlist_id_array}});" onmouseleave="deleteCursorSong('song-{{song.id}}');"> 
+                    <div class="song_info align-items-center col-9">
                         <img src="{{ url_for('static', path='/img/icons/logo.png') }}" class="rounded me-2" width="20" height="20" alt="">
                         <div class="song_name_and_songs_albom d-block ms-2 col-6">
-                            <h6 class="d-block m-0">{{song.name}}</h6>
-                            <span class="d-block">{{ author_name }}</span>
+                            <h6 class=" m-0 song-name">{{song.name}}</h6>
+                            <span class="">{{ author_name }}</span>
                         </div>
                     </div>
 

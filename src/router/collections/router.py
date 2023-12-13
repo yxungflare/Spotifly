@@ -280,7 +280,7 @@ async def find_song_in_playlist(request: Request, username: str, playlist_id: in
     playlist_dict = dict()
     for p in playlists_list:
         playlist_dict[p.id] = p.name
-        
+
     return templates.TemplateResponse('base_playlist.html', {'request': request, 'username': username, 'playlists': playlist_dict, 'playlist': current_playlist, 'songs': songs, 'songs_couter': songs_couter, 'version_songs_couter': version})
 
 
