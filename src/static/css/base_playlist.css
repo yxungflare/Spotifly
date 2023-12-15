@@ -52,3 +52,220 @@ audio::-webkit-media-controls-panel {
 .song_info{
   display: flex ;
 }
+
+.player-container {
+  align-items: center;
+  padding: 7px;
+  min-height: 5rem;
+  background-color: rgb(0, 0, 0);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  /* z-index: 999; Adjust the z-index as needed */
+}
+
+.bottom-group{
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.player-bottoms{
+  cursor: pointer;
+  width: 30px;
+  margin-right: 30px;
+  color: white;
+}
+
+.player-bottoms:hover{
+  transition-duration: .5s;
+  color: rgb(105, 105, 170);
+}
+
+.player-bottoms:not(:hover){
+  transition-duration: .5s;
+  color: rgb(255, 255, 255);
+}
+
+.player-bottoms:last-child{
+  margin-right: 0;
+}
+
+.duration span{
+  color: #fff;
+  font-size: 11px;
+  width: 32px;
+  font-weight: 600;
+}
+
+.duration #currentStart{
+  margin-right: 20px;
+}
+
+.duration #currentEnd{
+  margin-left: 20px;
+}
+
+.bar{
+  position: relative;
+  width: 80%;
+  height: 2px;
+  background-color: rgb(105, 105, 170);
+  margin: 0px 15px 0px 10px;
+}
+
+.bar .bar2{
+  position: absolute;
+  background-color: #36e2ec;
+  width: 0%;
+  height: 100%;
+  top: 0;
+}
+
+.bar .bar2 .dot{
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background-color: #36e2ec;
+  border-radius: 50%;
+  left: 0%;
+  top: -1px;
+  transition: 1s linear;
+}
+
+.bar .bar2 .dot::before{
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #36e2ec;
+  border-radius: 50%;
+  left: -5px;
+  top: -5px;
+  box-shadow: inset 0px 0px 3px #36e2ec;
+}
+
+.bar input{
+  position: absolute;
+  width: 100%;
+  top: -6px;
+  left: 0;
+  cursor: pointer;
+  z-index: 999;
+  transition: 3s linear;
+  opacity: 0;
+}
+
+.duration{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.volume-icon{
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.volume-icon iconify-icon{
+  margin: 0 20px 0 50px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.volume-icon iconify-icon:hover{
+  color: rgb(105, 105, 170);
+  transition: .5s;
+}
+
+.volume-icon iconify-icon:not(:hover){
+  transition-duration: .5s;
+  color: rgb(255, 255, 255);
+}
+
+.vol{
+  position: relative;
+  width: 40%;
+  height: 3px;
+  background-color: rgb(105, 105, 170);
+  margin: 0px 15px 0px 10px;
+}
+
+.vol .vol2{
+  position: absolute;
+  background-color: #36e2ec;
+  width: 0%;
+  height: 100%;
+  top: 0;
+}
+
+.vol .vol2 .vol-dot{
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background-color: #36e2ec;
+  border-radius: 50%;
+  left: 0%;
+  top: -1px;
+  transition: 1s linear;
+}
+
+.vol .vol2 .vol-dot::before{
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #36e2ec;
+  border-radius: 50%;
+  left: -5px;
+  top: -5px;
+  box-shadow: inset 0px 0px 3px #36e2ec;
+}
+
+.vol input{
+  position: absolute;
+  width: 100%;
+  top: -6px;
+  left: 0;
+  cursor: pointer;
+  z-index: 999;
+  transition: 3s linear;
+  opacity: 0;
+}
+
+.song-cover{
+  margin: 7px 40px 0 20px;
+}
+
+.song-info{
+  align-items: center;  
+}
+
+.song-name-author{
+  margin-right: 50px;
+  color: #fff;
+}
+
+.not_favorite_heart_icon{
+  cursor: pointer;
+  margin: 0 40px 0 20px;
+  font-size: 30px;
+  /* width: 41px; */
+}
+
+.share-song-icon{
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.share-song-icon iconify-icon:hover{
+  transition-duration: .5s;
+  color: rgb(105, 105, 170);
+}
+
+.share-song-icon iconify-icon:not(:hover){
+  transition-duration: .5s;
+  color: rgb(255, 255, 255);
+}
