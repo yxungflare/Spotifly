@@ -370,17 +370,6 @@ function delete_song(song_id, username, playlist_id){
     location.reload();
 }
 
-function copyCurrentSong(){
-    // Урл Ссылка на альбом с данной песней + выделение данной песни, что именно она скопирована 
-    // console.log({'status': 'success!'})
-}
-
-function addToPlaylist(){
-    // Создаем модальное окно, в котором дадим пользователю право выбора, в какой плейлист ему добавить песню
-    // console.log({'status': 'success!'})
-}
-
-
 function addSongToAnotherPlaylist(username, song_id, playlist_id_array){
     active_checkbox_playlists = []
     for(p=0; p < playlist_id_array.length; p++){

@@ -45,6 +45,9 @@ class Song(Base):
     name: Mapped[str] = mapped_column(
         String(length=150), unique=False, nullable=False
     )
+    filename: Mapped[str] = mapped_column(
+        String(length=150), unique=False, nullable=False
+    ) 
     username_id: Mapped[str] = mapped_column(
         ForeignKey('user.id'), unique=False, nullable=True
     )

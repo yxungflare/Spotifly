@@ -41,6 +41,11 @@ div .song:hover{
   border: greenyellow 1px solid;
 }
 
+div .song.clicked{
+  cursor: pointer;
+  border: greenyellow 1px solid;
+}
+
 audio::-webkit-media-controls-panel {
   background-color: white;
 }
@@ -92,12 +97,61 @@ audio::-webkit-media-controls-panel {
   margin-right: 0;
 }
 
+
+#randomSong{transition: color .1s;}
+#randomSong:active{color: #e8fd00;}
+
+
+#randomSong.clicked{
+  color: #9d81ba;
+}
+#randomSong.clicked:hover{
+  color: rgb(105, 105, 170);
+}
+#randomSong.clicked{transition: color .10s;}
+#randomSong.clicked:active{color: #e8fd00;}
+
+#replaySong{transition: color .1s;}
+#replaySong:active{color: #e8fd00;}
+
+
+#replaySong.clicked{
+  color: #9d81ba;
+}
+#replaySong.clicked:hover{
+  color: rgb(105, 105, 170);
+}
+#replaySong.clicked{transition: color .10s;}
+#replaySong.clicked:active{color: #e8fd00;}
+
+#replaySong.double-clicked{
+  color: #7900fb;
+}
+#replaySong.double-clicked:hover{
+  color: rgb(105, 105, 170);
+}
+#replaySong.double-clicked{transition: color .10s;}
+#replaySong.double-clicked:active{color: #e8fd00;}
+
+#previousSong{transition: color .10s;}
+
+#previousSong:active{
+  color: #e8fd00;
+}
+
+#nextSong{transition: color .10s;}
+
+#nextSong:active{
+  color: #e8fd00;
+}
+
 .duration span{
   color: #fff;
   font-size: 11px;
   width: 32px;
   font-weight: 600;
 }
+
 
 .duration #currentStart{
   margin-right: 20px;
@@ -248,11 +302,10 @@ audio::-webkit-media-controls-panel {
   color: #fff;
 }
 
-.not_favorite_heart_icon{
+.make_not_favorite_song_in_player .not_favorite_heart_icon{
   cursor: pointer;
-  margin: 0 40px 0 20px;
+  margin: 0 40px 0 0;
   font-size: 30px;
-  /* width: 41px; */
 }
 
 .share-song-icon{

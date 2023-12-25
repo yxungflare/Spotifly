@@ -241,8 +241,10 @@ async def add_song_to_playlist(request: Request, username: str, playlist_id: int
     current_playlist = playlist.scalar()
 
     # Добавляем песню в ДБ
+    print(song.filename)
     added_song = Song(
         name = get_audio_metadata(file_path, 1),
+        filename = song.filename,
         username_id = current_user.id,
         playlist_id = current_playlist.id,
         author_id = await get_author_id(db, file_path),

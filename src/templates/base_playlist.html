@@ -92,11 +92,11 @@
 
         <div class="card mb-3 playlist " id="content" style="max-width: 89%;">
             {% for song, author_name in songs %}
-                <div id="song" class="song-list song align-items-center position-relative col-12" onmouseenter="cursorSong('song-{{song.id}}', {{playlists}}, '{{username}}', {{song.id}}, {{playlist_id_array}});" onmouseleave="deleteCursorSong('song-{{song.id}}');"> 
+                <div id="song" class="song-list song align-items-center position-relative col-12" onclick="playSong('{{ author_name }}', '{{song.name}}', '{{song.filename}}', '{{username}}', {{playlist.id}})" onmouseenter="cursorSong('song-{{song.id}}', {{playlists}}, '{{username}}', {{song.id}}, {{playlist_id_array}});" onmouseleave="deleteCursorSong('song-{{song.id}}');"> 
                     <div class="song_info align-items-center col-9">
                         <img src="{{ url_for('static', path='/img/icons/logo.png') }}" class="rounded me-2" width="20" height="20" alt="">
                         <div class="song_name_and_songs_albom d-block ms-2 col-6">
-                            <h6 class=" m-0 song-name">{{song.name}}</h6>
+                            <h6 class=" m-0 song-name" id="{{song.filename}}">{{song.name}}</h6>
                             <span class="">{{ author_name }}</span>
                         </div>
                     </div>
@@ -142,50 +142,35 @@
             <div class="col-1 song-cover">
                 <iconify-icon icon="mdi:music-box" style="color: white;" width="50"></iconify-icon>
             </div>
-            <div class="col-2 song-name-author">
-                <span class="song-name">name</span>
-                <span class="song-author">author</span>
+            <div class="col-3 song-name-author">
+                <span class="song-name" id="song-name"></span> <br>
+                <span class="song-author" id="song-author"></span>
             </div>
-            <div class="">
+            <div class="make_not_favorite_song_in_player">
                 <span class="not_favorite_heart_icon">❤️</span>
             </div>
             <div class="share-song-icon">
-                <iconify-icon icon="fluent:share-16-filled" width="30"></iconify-icon>
+                <iconify-icon icon="ph:plus-fill" width="30"></iconify-icon>
             </div>
         </div>
         <div class="col-6">
             <div class="bottom-group d-flex">
-                <!-- <img class="player-bottoms" src="{{ url_for('static', path='/img/icons/random-song.svg') }}" alt="random-play"> -->
                 
-                <svg class="player-bottoms" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M18.414,7.9V9.586a1,1,0,0,0,1.707.707l3.586-3.586a1,1,0,0,0,0-1.414L20.121,1.707a1,1,0,0,0-1.707.707v2.4c-3.35.732-5.6,2.781-7.51,4.911C8.718,7.316,6.08,5.021,1.83,4.586c-.046-.01-.311-.039-.33-.039a1.5,1.5,0,0,0-.131,2.994h0c3.464.3,5.5,2.159,7.549,4.458-2.046,2.3-4.087,4.166-7.552,4.462h0A1.5,1.5,0,0,0,1.5,19.453c.038,0,.073,0,.111-.008h0C6.84,19,9.649,15.753,12.148,12.86,14.059,10.65,15.792,8.7,18.414,7.9Z"/>
-                    <path d="M20.121,13.707a1,1,0,0,0-1.707.707v1.7a9.186,9.186,0,0,1-3.452-2,1.466,1.466,0,0,0-2.062.157l-.025.028a1.49,1.49,0,0,0,.165,2.111A11.977,11.977,0,0,0,18.414,19.2v2.391a1,1,0,0,0,1.707.707l3.586-3.586a1,1,0,0,0,0-1.414Z"/>
-                </svg>
+                <iconify-icon icon="fad:random-1dice" id="randomSong" class="player-bottoms" width="40"></iconify-icon>
 
-                <svg class="player-bottoms" fill="currentColor" id="arrow-circle-down" viewBox="0 0 24 24">
-                    <path d="M24,12A12,12,0,1,0,12,24,12.013,12.013,0,0,0,24,12ZM8,12a2.993,2.993,0,0,1,.752-1.987c.291-.327.574-.637.777-.84L12.353,6.3a1,1,0,0,1,1.426,1.4L10.95,10.58c-.187.188-.441.468-.7.759a1,1,0,0,0,0,1.323c.258.29.512.57.693.752L13.779,16.3a1,1,0,0,1-1.426,1.4L9.524,14.822c-.2-.2-.48-.507-.769-.833A2.99,2.99,0,0,1,8,12Z"/>
-                </svg>  
+                <iconify-icon icon="carbon:previous-filled" id="previousSong" class="player-bottoms" width="40"></iconify-icon>  
 
-                <svg class="player-bottoms" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20.463,7.713l-9.1-6.677A5.317,5.317,0,0,0,2.9,5.323V18.677a5.311,5.311,0,0,0,8.46,4.287l9.105-6.677a5.315,5.315,0,0,0,0-8.574Zm-1.774,6.155-9.1,6.677A2.317,2.317,0,0,1,5.9,18.677V5.323a2.276,2.276,0,0,1,1.27-2.066A2.328,2.328,0,0,1,8.223,3a2.3,2.3,0,0,1,1.362.455l9.1,6.677a2.316,2.316,0,0,1,0,3.736Z"/>
-                </svg>
+                <iconify-icon icon="line-md:play-filled" id="masterPlay" class="player-bottoms" width="40" ></iconify-icon>
 
-                <svg class="player-bottoms" fill="currentColor" id="arrow-circle-down" viewBox="0 0 24 24">
-                    <path d="M0,12A12,12,0,1,0,12,0,12.013,12.013,0,0,0,0,12Zm16,0a2.993,2.993,0,0,1-.752,1.987c-.291.327-.574.637-.777.84L11.647,17.7a1,1,0,1,1-1.426-1.4L13.05,13.42c.187-.188.441-.468.7-.759a1,1,0,0,0,0-1.323c-.258-.29-.512-.57-.693-.752L10.221,7.7a1,1,0,1,1,1.426-1.4l2.829,2.879c.2.2.48.507.769.833A2.99,2.99,0,0,1,16,12Z"/>
-                </svg>
+                <iconify-icon icon="carbon:next-filled" id="nextSong" class="player-bottoms" width="40"></iconify-icon>
 
-                <svg class="player-bottoms" fill="currentColor" id="Capa_1" viewBox="0 0 513.806 513.806">
-                    <g>
-                      <path d="M66.074,228.731C81.577,123.379,179.549,50.542,284.901,66.045c35.944,5.289,69.662,20.626,97.27,44.244l-24.853,24.853   c-8.33,8.332-8.328,21.84,0.005,30.17c3.999,3.998,9.423,6.245,15.078,6.246h97.835c11.782,0,21.333-9.551,21.333-21.333V52.39   c-0.003-11.782-9.556-21.331-21.338-21.329c-5.655,0.001-11.079,2.248-15.078,6.246L427.418,65.04   C321.658-29.235,159.497-19.925,65.222,85.835c-33.399,37.467-55.073,83.909-62.337,133.573   c-2.864,17.607,9.087,34.202,26.693,37.066c1.586,0.258,3.188,0.397,4.795,0.417C50.481,256.717,64.002,244.706,66.074,228.731z"/>
-                      <path d="M479.429,256.891c-16.108,0.174-29.629,12.185-31.701,28.16C432.225,390.403,334.253,463.24,228.901,447.738   c-35.944-5.289-69.662-20.626-97.27-44.244l24.853-24.853c8.33-8.332,8.328-21.84-0.005-30.17   c-3.999-3.998-9.423-6.245-15.078-6.246H43.568c-11.782,0-21.333,9.551-21.333,21.333v97.835   c0.003,11.782,9.556,21.331,21.338,21.329c5.655-0.001,11.079-2.248,15.078-6.246l27.733-27.733   c105.735,94.285,267.884,85.004,362.17-20.732c33.417-37.475,55.101-83.933,62.363-133.615   c2.876-17.605-9.064-34.208-26.668-37.084C482.655,257.051,481.044,256.91,479.429,256.891z"/>
-                    </g>
-                </svg>
+                <iconify-icon icon="ic:round-replay-circle-filled" id="replaySong" class="player-bottoms" width="40"></iconify-icon>
 
             </div>
             <div class="duration">
                 <span id="currentStart">00:00</span>
                     <div class="bar">
-                        <input type="range" name="song_duration" id="song_duration" min="0" value="0" max="100">
+                        <input type="range" name="song_duration" id="songDuration" min="0" value="0" max="100">
                         <div class="bar2" id="bar2">
                             <div class="dot"></div>
                         </div>
@@ -208,6 +193,9 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="{{url_for('static', path='/js/base_playlist.js')}}"></script>
+<script src="{{url_for('static', path='/js/player.js')}}"></script>
+<script src="{{url_for('static', path='/js/music.js')}}"></script>
+
 
 <script>
     document.getElementById('liveToastBtn').addEventListener('click', function () {
