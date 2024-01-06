@@ -3,6 +3,7 @@
 {% block head %}
     <link href="{{url_for('static', path='/css/base_playlist.css')}}" rel="stylesheet" />
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -96,8 +97,8 @@
                     <div class="song_info align-items-center col-9">
                         <img src="{{ url_for('static', path='/img/icons/logo.png') }}" class="rounded me-2" width="20" height="20" alt="">
                         <div class="song_name_and_songs_albom d-block ms-2 col-6">
-                            <h6 class=" m-0 song-name" id="{{song.filename}}">{{song.name}}</h6>
-                            <span class="">{{ author_name }}</span>
+                            <h6 class=" m-0 song-name-line" id="{{song.filename}}">{{song.name}}</h6>
+                            <span class="author">{{ author_name }}</span>
                         </div>
                     </div>
 
@@ -156,13 +157,13 @@
         <div class="col-6">
             <div class="bottom-group d-flex">
                 
-                <iconify-icon icon="fad:random-1dice" id="randomSong" class="player-bottoms" width="40"></iconify-icon>
+                <iconify-icon icon="fad:random-1dice" id="randomSong" class="player-bottoms" width="40" onclick="randomSong()"></iconify-icon>
 
-                <iconify-icon icon="carbon:previous-filled" id="previousSong" class="player-bottoms" width="40"></iconify-icon>  
+                <iconify-icon icon="carbon:previous-filled" id="previousSong" class="player-bottoms" width="40" onclick="previousSong()"></iconify-icon>  
 
                 <iconify-icon icon="line-md:play-filled" id="masterPlay" class="player-bottoms" width="40" ></iconify-icon>
 
-                <iconify-icon icon="carbon:next-filled" id="nextSong" class="player-bottoms" width="40"></iconify-icon>
+                <iconify-icon icon="carbon:next-filled" id="nextSong" class="player-bottoms" width="40" onclick="nextSong()"></iconify-icon>
 
                 <iconify-icon icon="ic:round-replay-circle-filled" id="replaySong" class="player-bottoms" width="40"></iconify-icon>
 
@@ -170,6 +171,7 @@
             <div class="duration">
                 <span id="currentStart">00:00</span>
                     <div class="bar">
+                        <audio id="currentMusic" class="d-none"></audio>
                         <input type="range" name="song_duration" id="songDuration" min="0" value="0" max="100">
                         <div class="bar2" id="bar2">
                             <div class="dot"></div>
